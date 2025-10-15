@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -52,6 +52,19 @@ export default function CollaborationPage() {
   const [walletConnected, setWalletConnected] = useState(false)
   const [walletAddress, setWalletAddress] = useState("")
   const [showBatchTransfer, setShowBatchTransfer] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+
+  const filteredComments = useMemo(() => {
+    if (!searchQuery.trim()) return comments
+
+    const query = searchQuery.toLowerCase()
+    return comments.filter(
+      (comment) =>
+        comment.name.toLowerCase().includes(query) ||
+        comment.comment.toLowerCase().includes(query) ||
+        comment.address.toLowerCase().includes(query),
+    )
+  }, [searchQuery])
 
   return (
     <div className="min-h-screen bg-background">
